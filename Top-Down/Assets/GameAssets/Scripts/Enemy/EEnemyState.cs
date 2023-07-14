@@ -1,9 +1,7 @@
 namespace TopDown {
-  public enum EEnemyState {
-    EAting,
-    ELookAt,
+  public enum EnemyState {
+    EEating,
     EFollow,
     EAttack,
-    EIdle
   }
 }

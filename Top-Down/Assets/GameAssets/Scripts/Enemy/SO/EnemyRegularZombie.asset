@@ -15,9 +15,8 @@ MonoBehaviour:
   <Name>k__BackingField: EnemyRegularZombie
   <Enemy>k__BackingField: {fileID: 2223292311514416010, guid: d7463c77e1809e546b4ab2bbff7adfba, type: 3}
   <EnemyLevelInfos>k__BackingField:
-  - <LookRadius>k__BackingField: 7
-    <FollowRadius>k__BackingField: 5
-    <AttackRadius>k__BackingField: 3
+  - <FollowRadius>k__BackingField: 7
+    <AttackRadius>k__BackingField: 1.5
     <MoveSpeed>k__BackingField: 1
-    <Health>k__BackingField: 2
-    <Damage>k__BackingField: 0.5
+    <Health>k__BackingField: 3
+    <Damage>k__BackingField: 1

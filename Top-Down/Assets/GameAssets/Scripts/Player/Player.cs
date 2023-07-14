@@ -32,9 +32,7 @@ namespace TopDown {
       _inputHandler.OnRotate.Subscribe(Rotate);
     }
 
-    private void Attack() {
-      _animator.SetTrigger(_attackAnimTrig);
-    }
+    private void Attack() => _animator.SetTrigger(_attackAnimTrig);
 
     private void Update() {
       _attackTimer += Time.unscaledDeltaTime;
