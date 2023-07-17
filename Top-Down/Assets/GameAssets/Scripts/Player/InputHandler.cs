@@ -7,7 +7,6 @@ namespace TopDown {
     private readonly Joystick _joystick;
 
     public readonly ReactiveCommand<Vector3> OnMove = new();
-
     public readonly ReactiveCommand<Vector3> OnRotate = new();
 
     public InputHandler(Joystick joystick) {

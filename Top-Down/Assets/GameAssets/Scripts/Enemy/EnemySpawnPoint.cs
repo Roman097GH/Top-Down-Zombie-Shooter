@@ -5,7 +5,6 @@ namespace TopDown {
   public class EnemySpawnPoint : MonoBehaviour {
     [Range(1, 10)] [SerializeField] private int _enemyLevel;
     [SerializeField] private SOEnemy _soEnemy;
-    private Player _player;
 
     [Inject]
     private void Construct(EnemyFactoryService enemyFactoryService) {

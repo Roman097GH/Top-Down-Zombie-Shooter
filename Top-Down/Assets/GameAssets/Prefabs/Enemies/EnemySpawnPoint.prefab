@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyLevel: 1
   _soEnemy: {fileID: 11400000, guid: 76c4ad8922e406a469242ab25e9c501e, type: 2}
+  _player: {fileID: 4417404746802835578, guid: c7bd1e1fcaf117841bd07f9d16b43556, type: 3}
