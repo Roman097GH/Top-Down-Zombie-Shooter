@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7246374213612914432}
-  - component: {fileID: 9149672333884339418}
+  - component: {fileID: 8668084790801710446}
   - component: {fileID: 5380214619241443876}
   m_Layer: 0
-  m_Name: StateTrigger
+  m_Name: StateCheckCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 2746849879071224542}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9149672333884339418
+--- !u!114 &8668084790801710446
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56,7 +56,66 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 7
+  m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!1 &1955988164373130369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6795077584810780849}
+  - component: {fileID: 886633521107890513}
+  - component: {fileID: 6835204346696770921}
+  m_Layer: 10
+  m_Name: TakeDamageCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6795077584810780849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955988164373130369}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2746849879071224542}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &886633521107890513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955988164373130369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a913adbb2f9ae4ebc074268cedfe21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &6835204346696770921
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955988164373130369}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 3
+  m_Direction: 1
   m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!1 &2746849879071224543
 GameObject:
@@ -68,10 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2746849879071224542}
   - component: {fileID: 2746849879071224537}
-  - component: {fileID: 7972663520582028970}
   - component: {fileID: 2236549947973089459}
-  - component: {fileID: 4314847820953042951}
-  - component: {fileID: 1169114824388772875}
   m_Layer: 10
   m_Name: EnemyTankZombie
   m_TagString: Untagged
@@ -93,6 +149,8 @@ Transform:
   m_Children:
   - {fileID: 7327740996268425840}
   - {fileID: 7246374213612914432}
+  - {fileID: 4204073923121942640}
+  - {fileID: 6795077584810780849}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -109,28 +167,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyName: 
-  _followRadius: 0
   _attackRadius: 0
   _moveSpeed: 0
   _health: 0
   _damage: 0
+  _damaged: {fileID: 886633521107890513}
   _animator: {fileID: 7327740996260816604}
   _attackTimer: 0
   _attackPeriod: 2.5
   _meshAgent: {fileID: 2236549947973089459}
-  _enemyStateCheck: {fileID: 9149672333884339418}
---- !u!114 &7972663520582028970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2746849879071224543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9a913adbb2f9ae4ebc074268cedfe21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _enemyStateCheck: {fileID: 8668084790801710446}
+  _enemyMakeDamageCheck: {fileID: 2180742868365970810}
 --- !u!195 &2236549947973089459
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -141,7 +188,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 0
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -153,36 +200,65 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!136 &4314847820953042951
+--- !u!1 &7030193078909827502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4204073923121942640}
+  - component: {fileID: 2180742868365970810}
+  - component: {fileID: 3120798914644537885}
+  m_Layer: 0
+  m_Name: MakeDamageCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4204073923121942640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7030193078909827502}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2746849879071224542}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2180742868365970810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7030193078909827502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fab32b975a9c102498f73d206f3a4706, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &3120798914644537885
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2746849879071224543}
+  m_GameObject: {fileID: 7030193078909827502}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 1
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.5, z: 0}
---- !u!54 &1169114824388772875
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2746849879071224543}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1001 &7327740996268263392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -192,7 +268,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 171480, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
       propertyPath: m_Name
-      value: SA_Zombie_Bellhop
+      value: ModelTankZombie
       objectReference: {fileID: 0}
     - target: {fileID: 427408, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
       propertyPath: m_RootOrder

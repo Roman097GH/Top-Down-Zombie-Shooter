@@ -77,5 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00f05db235e29e4faa1c28ce549d058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 4417404746802835578, guid: c7bd1e1fcaf117841bd07f9d16b43556, type: 3}
+  _playerPrefab: {fileID: 7521629650715860772, guid: c7bd1e1fcaf117841bd07f9d16b43556, type: 3}
   _joystick: {fileID: 0}
+  _playerTypes: {fileID: 11400000, guid: f311d86544414c8468188af102049cd6, type: 2}
+  _playerSpawnPoint: {fileID: 0}
+  _followCamera: {fileID: 0}

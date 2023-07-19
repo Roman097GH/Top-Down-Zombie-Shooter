@@ -1,18 +1,23 @@
 using JetBrains.Annotations;
-using UnityEngine;
 using Zenject;
 
 namespace TopDown {
   [UsedImplicitly]
-  public class GameplayController : IInitializable {
+  public class GameplayController : IInitializable, ITickable {
     private readonly PlayerFactoryService _playerFactoryService;
 
-    public GameplayController(PlayerFactoryService playerFactoryService) {
+    private readonly EnemyProvider _enemyProvider;
+
+    public GameplayController(PlayerFactoryService playerFactoryService, EnemyProvider enemyProvider) {
       _playerFactoryService = playerFactoryService;
+
+      _enemyProvider = enemyProvider;
     }
-    
-    void IInitializable.Initialize() {
-      _playerFactoryService.Create(PlayerType.EMale);
+
+    void IInitializable.Initialize() => _playerFactoryService.Create(PlayerType.EMale);
+
+    public void Tick() {
+
     }
   }
 }

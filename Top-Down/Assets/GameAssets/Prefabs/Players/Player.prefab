@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1500069930
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1500069931}
-  m_Layer: 6
-  m_Name: "\u0421ameraFocusPoint"
-  m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1500069931
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500069930}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7521629650715860775}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4374105900042327254
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5912761250573372554}
   - component: {fileID: 8814719674458094739}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Raycast
   m_TagString: Untagged
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
@@ -61,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7521629650715860775}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8814719674458094739
 MonoBehaviour:
@@ -75,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3936536379914f845aa29d4e345a8166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 10
+  _damage: 0.5
   _layerMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -98,6 +67,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7521629650715860775}
   - component: {fileID: 4417404746802835578}
+  - component: {fileID: -1988675681506115184}
   - component: {fileID: 5560633458474279692}
   m_Layer: 6
   m_Name: Player
@@ -118,7 +88,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1500069931}
   - {fileID: 5912761250573372554}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -136,14 +105,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 5560633458474279692}
-  _moveSpeed: 10
-  _rotationSpeed: 10
+  _damaged: {fileID: -1988675681506115184}
+  _moveSpeed: 0
+  _rotationSpeed: 0
   _animator: {fileID: 0}
   _decelerationRate: 3
   _shootTimer: 0
   _shootPeriod: 0.65
   _shootBase: {fileID: 8814719674458094739}
   _health: 0
+--- !u!114 &-1988675681506115184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521629650715860772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a913adbb2f9ae4ebc074268cedfe21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!143 &5560633458474279692
 CharacterController:
   m_ObjectHideFlags: 0
@@ -157,7 +139,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 3
   m_Radius: 0.5
-  m_SlopeLimit: 5
+  m_SlopeLimit: 1
   m_StepOffset: 0.1
   m_SkinWidth: 0.1
   m_MinMoveDistance: 0.001

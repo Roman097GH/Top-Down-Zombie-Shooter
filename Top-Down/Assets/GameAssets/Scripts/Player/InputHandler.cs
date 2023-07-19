@@ -6,8 +6,7 @@ namespace TopDown {
   public class InputHandler : ITickable {
     private readonly Joystick _joystick;
 
-    public readonly ReactiveCommand<Vector3> OnMove = new();
-    public readonly ReactiveCommand<Vector3> OnRotate = new();
+    public readonly ReactiveCommand<Vector3> OnJoystickMove = new();
 
     public InputHandler(Joystick joystick) {
       _joystick = joystick;
@@ -15,8 +14,7 @@ namespace TopDown {
 
     public void Tick() {
       if (_joystick.Direction == Vector2.zero) return;
-      OnMove?.Execute(_joystick.Direction);
-      OnRotate?.Execute(_joystick.Direction);
+      OnJoystickMove?.Execute(_joystick.Direction);
     }
   }
 }

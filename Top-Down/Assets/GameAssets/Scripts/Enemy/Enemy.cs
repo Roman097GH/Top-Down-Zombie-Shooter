@@ -2,65 +2,73 @@ using System;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
-using Zenject;
 
 namespace TopDown {
   public class Enemy : EnemyBase {
-    private float _distance;
+    [SerializeField, HideInInspector] private NavMeshAgent _meshAgent;
+    [SerializeField, HideInInspector] private EnemyStateCheck _enemyStateCheck;
+    [SerializeField, HideInInspector] private EnemyMakeDamageCheck _enemyMakeDamageCheck;
+    [SerializeField, HideInInspector] private Damageable _damageable;
+    [SerializeField, HideInInspector] private Animator _animator;
 
     private PlayerController _playerController;
-    
-    private EnemyState _enemyState = EnemyState.EEating;
-
-    [SerializeField] private Animator _animator;
-    private static readonly int _eatingAnim = Animator.StringToHash("EatingBool");
-    private static readonly int _followAnimTrig = Animator.StringToHash("FollowTrig");
-    private static readonly int _attackAnimTrig = Animator.StringToHash("AttackTrig");
 
     [SerializeField] private float _attackTimer;
     [SerializeField] private float _attackPeriod = 2.5f;
 
-    [SerializeField, HideInInspector] private NavMeshAgent _meshAgent;
+    private EnemyState _enemyState = EnemyState.EDefault;
 
-    [SerializeField, HideInInspector] private EnemyStateCheck _enemyStateCheck;
+    private static readonly int _followAnimTrig = Animator.StringToHash("FollowTrig");
+    private static readonly int _attackAnimTrig = Animator.StringToHash("AttackTrig");
+    private static readonly int _deathAnimTrig = Animator.StringToHash("DeathTrig");
+
+    private float _distance;
+
+    private bool _isFollow;
 
     private void OnValidate() {
       _meshAgent = GetComponent<NavMeshAgent>();
       _enemyStateCheck = GetComponentInChildren<EnemyStateCheck>();
+      _enemyMakeDamageCheck = GetComponentInChildren<EnemyMakeDamageCheck>();
+      _damageable = GetComponent<Damageable>();
     }
 
     public override void Initialize(SOEnemy enemyInfo, int enemyLevel) {
       EnemyLevelInfo info = enemyInfo.EnemyLevelInfos[enemyLevel];
 
       _enemyName = enemyInfo.name;
-
-      //_colliderRadius.radius = _followRadius;
-      //_followRadius = info.FollowRadius;
-
-      //_attackRadius = info.AttackRadius;
-
+      _attackRadius = info.AttackRadius;
       _moveSpeed = info.MoveSpeed;
       _meshAgent.speed = _moveSpeed;
-
       _health = info.Health;
-      
-      SetHealth(_health);
-      
       _damage = info.Damage;
 
-      _enemyStateCheck.Player.TakeUntilDestroy(this).Subscribe(OnPlayerChange);
+      _enemyStateCheck.PlayerFound.TakeUntilDestroy(this).Subscribe(OnPlayerChangeState);
+      _enemyMakeDamageCheck.PlayerFindForAttack.TakeUntilDestroy(this).Subscribe(OnPlayerChangeAttack);
+
+      _damageable.SetHealth(_health);
     }
 
-    private void OnPlayerChange(PlayerController playerController) {
-      Debug.Log(playerController.name);
+    private void OnPlayerChangeState(PlayerController playerController) {
+      _playerController = playerController;
+      _enemyState = EnemyState.EFollow;
+    }
+
+    private void OnPlayerChangeAttack(PlayerController playerController) {
+      _playerController = playerController;
+      _enemyState = EnemyState.EAttack;
     }
 
     private void Update() {
       _attackTimer += Time.unscaledDeltaTime;
 
+      if (_damageable.Health.Value == 0) {
+        _enemyState = EnemyState.EDeath;
+      }
+      
       switch (_enemyState) {
-        case EnemyState.EEating:
-          Eating();
+        case EnemyState.EDefault:
+          Default();
           break;
 
         case EnemyState.EFollow:
@@ -72,52 +80,38 @@ namespace TopDown {
           Attack();
           break;
 
+        case EnemyState.EDeath:
+          Death();
+          break;
+
+
         default: throw new ArgumentOutOfRangeException();
       }
     }
 
-    protected override void Eating() {
-      //_animator.SetBool(_eatingAnim, true);
-    }
+    protected override void Default() { }
 
     protected override void Follow() {
-      //_animator.SetBool(_eatingAnim, false);
+      Vector3 playerPosition = _playerController.transform.position;
+      _meshAgent.SetDestination(playerPosition);
       _animator.SetTrigger(_followAnimTrig);
-
-      _meshAgent.speed = _moveSpeed;
-
-      //_meshAgent.SetDestination(_player.transform.position);
+      _distance = Vector3.Distance(transform.position, playerPosition);
+      _enemyState = _distance <= _attackRadius ? EnemyState.EAttack : EnemyState.EFollow;
     }
 
     protected override void Attack() {
-      // if (!(_attackTimer > _attackPeriod)) return;
-      // _attackTimer = 0;
-      // _animator.SetTrigger(_attackAnimTrig);
+      if (!(_attackTimer > _attackPeriod)) return;
+      _attackTimer = 0;
+      _animator.SetTrigger(_attackAnimTrig);
+      _playerController.GetComponent<Damageable>().TakeDamage(_damage);
     }
 
-    // private void OnTriggerEnter(Collider other) {
-    //   if (other.gameObject.layer != _playerLayer || !other.TryGetComponent(out Player player)) return;
-    //
-    //   _player = player;
-    //   _enemyState = EnemyState.EFollow;
-    // }
-    //
-    // private void OnTriggerStay(Collider other) {
-    //   if (other.gameObject.layer != _playerLayer || !other.TryGetComponent(out Player player)) return;
-    //
-    //   _distance = Vector3.Distance(transform.position, player.transform.position);
-    //
-    //   if (_distance <= _attackRadius) _enemyState = EnemyState.EAttack;
-    //   //else if (_distance <= _followRadius) _enemyState = EnemyState.EFollow;
-    //   else _enemyState = EnemyState.EFollow;
-    // }
-    //
-    // private void OnTriggerExit(Collider other) {
-    //   if (other.gameObject.layer != _playerLayer || !other.TryGetComponent(out Player player)) return;
-    //
-    //   _distance = 0;
-    //   _player = null;
-    //   _enemyState = EnemyState.EFollow;
-    // }
+    protected override void Death() {
+      _animator.SetTrigger(_deathAnimTrig);
+      Destroy(gameObject, 1.5f);
+      
+    }
+
+    public Vector3 GetPosition() => transform.position;
   }
 }

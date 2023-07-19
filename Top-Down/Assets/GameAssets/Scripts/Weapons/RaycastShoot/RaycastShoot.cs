@@ -6,6 +6,7 @@ namespace TopDown {
     private float _damage = 10f;
 
     [Header("Ray")] [SerializeField] private LayerMask _layerMask;
+
     //[SerializeField, Min(0)] private float _distance = Mathf.Infinity;
     [SerializeField, Min(0)] private float _distance = 100f;
     [SerializeField, Min(0)] private int _shotCount = 1;
@@ -37,7 +38,8 @@ namespace TopDown {
       if (!Physics.Raycast(ray, out RaycastHit hitInfo, _distance, _layerMask)) return;
       var hitCollider = hitInfo.collider;
 
-      if (hitCollider.TryGetComponent(out IDamageable damageable)) {
+      // GetComponentInParent???
+      if (hitCollider.GetComponentInParent<Enemy>().TryGetComponent(out IDamageable damageable)) {
         damageable.TakeDamage(_damage);
       } else {
         Debug.Log("Missing!");
