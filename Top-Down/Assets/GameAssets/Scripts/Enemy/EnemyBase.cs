@@ -13,7 +13,6 @@ namespace TopDown {
     protected abstract void Default();
     protected abstract void Follow();
     protected abstract void Attack();
-
     protected abstract void Death();
   }
 }

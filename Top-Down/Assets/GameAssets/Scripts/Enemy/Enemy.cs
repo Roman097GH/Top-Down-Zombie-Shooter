@@ -5,11 +5,11 @@ using UnityEngine.AI;
 
 namespace TopDown {
   public class Enemy : EnemyBase {
-    [SerializeField, HideInInspector] private NavMeshAgent _meshAgent;
-    [SerializeField, HideInInspector] private EnemyStateCheck _enemyStateCheck;
     [SerializeField, HideInInspector] private EnemyMakeDamageCheck _enemyMakeDamageCheck;
+    [SerializeField, HideInInspector] private EnemyStateCheck _enemyStateCheck;
+    [SerializeField, HideInInspector] private NavMeshAgent _meshAgent;
     [SerializeField, HideInInspector] private Damageable _damageable;
-    [SerializeField, HideInInspector] private Animator _animator;
+    [SerializeField] private Animator _animator;
 
     private PlayerController _playerController;
 
@@ -22,14 +22,10 @@ namespace TopDown {
     private static readonly int _attackAnimTrig = Animator.StringToHash("AttackTrig");
     private static readonly int _deathAnimTrig = Animator.StringToHash("DeathTrig");
 
-    private float _distance;
-
-    private bool _isFollow;
-
     private void OnValidate() {
-      _meshAgent = GetComponent<NavMeshAgent>();
-      _enemyStateCheck = GetComponentInChildren<EnemyStateCheck>();
       _enemyMakeDamageCheck = GetComponentInChildren<EnemyMakeDamageCheck>();
+      _enemyStateCheck = GetComponentInChildren<EnemyStateCheck>();
+      _meshAgent = GetComponent<NavMeshAgent>();
       _damageable = GetComponent<Damageable>();
     }
 
@@ -37,7 +33,6 @@ namespace TopDown {
       EnemyLevelInfo info = enemyInfo.EnemyLevelInfos[enemyLevel];
 
       _enemyName = enemyInfo.name;
-      _attackRadius = info.AttackRadius;
       _moveSpeed = info.MoveSpeed;
       _meshAgent.speed = _moveSpeed;
       _health = info.Health;
@@ -65,7 +60,7 @@ namespace TopDown {
       if (_damageable.Health.Value == 0) {
         _enemyState = EnemyState.EDeath;
       }
-      
+
       switch (_enemyState) {
         case EnemyState.EDefault:
           Default();
@@ -84,7 +79,6 @@ namespace TopDown {
           Death();
           break;
 
-
         default: throw new ArgumentOutOfRangeException();
       }
     }
@@ -95,8 +89,6 @@ namespace TopDown {
       Vector3 playerPosition = _playerController.transform.position;
       _meshAgent.SetDestination(playerPosition);
       _animator.SetTrigger(_followAnimTrig);
-      _distance = Vector3.Distance(transform.position, playerPosition);
-      _enemyState = _distance <= _attackRadius ? EnemyState.EAttack : EnemyState.EFollow;
     }
 
     protected override void Attack() {
@@ -109,7 +101,6 @@ namespace TopDown {
     protected override void Death() {
       _animator.SetTrigger(_deathAnimTrig);
       Destroy(gameObject, 1.5f);
-      
     }
 
     public Vector3 GetPosition() => transform.position;

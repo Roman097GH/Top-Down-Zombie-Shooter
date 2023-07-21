@@ -28,8 +28,8 @@ namespace TopDown {
       GameObject player = Object.Instantiate(_playerPrefab, _playerSpawnPoint.position, Quaternion.identity);
       GameObject playerView = Object.Instantiate(playerInfo.ViewPrefab, player.transform);
       PlayerController = player.GetComponent<PlayerController>();
-      PlayerController.Initialize(_inputHandler, type, playerInfo.MoveSpeed, playerInfo.RotationSpeed,
-                                  playerInfo.Health, _enemyProvider);
+      PlayerController.Initialize(_inputHandler, type, _enemyProvider, playerInfo.MoveSpeed, playerInfo.RotationSpeed,
+                                  playerInfo.Health, playerInfo.FireDelay, playerInfo.NumberOfRounds);
       _followCamera.Follow(player.transform);
     }
   }

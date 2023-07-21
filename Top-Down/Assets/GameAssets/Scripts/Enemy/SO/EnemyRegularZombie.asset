@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyRegularZombie
   m_EditorClassIdentifier: 
   <Name>k__BackingField: EnemyRegularZombie
-  <Enemy>k__BackingField: {fileID: 2223292311514416010, guid: d7463c77e1809e546b4ab2bbff7adfba, type: 3}
+  <Enemy>k__BackingField: {fileID: 2798890425651029134, guid: d7463c77e1809e546b4ab2bbff7adfba, type: 3}
   <EnemyLevelInfos>k__BackingField:
   - <FollowRadius>k__BackingField: 10
     <AttackRadius>k__BackingField: 1

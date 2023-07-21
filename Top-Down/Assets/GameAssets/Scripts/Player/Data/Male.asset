@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33faec74255d5ae4383c7d25c3f3fba5, type: 3}
   m_Name: Male
   m_EditorClassIdentifier: 
+  <ViewPrefab>k__BackingField: {fileID: 8913256953396509935, guid: 22b237dde0e9d6246bbece5743dde3c4, type: 3}
   <MoveSpeed>k__BackingField: 10
   <RotationSpeed>k__BackingField: 10
   <Health>k__BackingField: 10
-  <ViewPrefab>k__BackingField: {fileID: 8913256953396509935, guid: 22b237dde0e9d6246bbece5743dde3c4, type: 3}
-  <Animator>k__BackingField: {fileID: 8913256953396509934, guid: 22b237dde0e9d6246bbece5743dde3c4, type: 3}
+  <FireDelay>k__BackingField: 0.65
+  <NumberOfRounds>k__BackingField: 30
