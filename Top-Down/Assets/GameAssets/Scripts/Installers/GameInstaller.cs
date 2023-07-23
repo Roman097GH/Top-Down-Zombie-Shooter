@@ -7,27 +7,25 @@ namespace TopDown {
     [SerializeField] private Joystick _joystick;
     [SerializeField] private PlayerTypes _playerTypes;
     [SerializeField] private Transform _playerSpawnPoint;
-    [SerializeField] private FollowCamera _followCamera;
-    
+    [SerializeField] private PlayerCamera _playerCamera;
+
     [SerializeField] private EnemyProvider _enemyProvider;
 
     public override void InstallBindings() {
-      Container.BindInterfacesAndSelfTo<InputHandler>().AsSingle().NonLazy();
+      Container.BindInterfacesAndSelfTo<PlayerInputService>().AsSingle().NonLazy();
 
       Container.BindInterfacesTo<GameplayController>().AsSingle().NonLazy();
 
       Container.BindInstance(_playerSpawnPoint).WithId(GameIds.PlayerSpawnPointID);
       Container.BindInstance(_playerPrefab).WithId(GameIds.PlayerID);
 
-      Container.Bind<Joystick>().FromInstance(_joystick);
-
       Container.Bind<PlayerFactoryService>().AsSingle();
       Container.Bind<EnemyFactoryService>().AsSingle();
 
-      Container.Bind<FollowCamera>().FromInstance(_followCamera);
-
+      Container.Bind<Joystick>().FromInstance(_joystick);
+      Container.Bind<PlayerCamera>().FromInstance(_playerCamera);
       Container.Bind<EnemyProvider>().FromInstance(_enemyProvider);
-      
+
       BindScriptableObjects();
     }
 

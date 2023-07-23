@@ -5,7 +5,7 @@ namespace TopDown {
   public class EnemyStateCheck : MonoBehaviour {
     private const string PLAYER = "Player";
     private int _playerLayer;
-    public readonly ReactiveCommand<PlayerController> PlayerFound = new();
+    public readonly ReactiveCommand<PlayerController> PlayerFindForState = new();
 
     private void Awake() {
       _playerLayer = LayerMask.NameToLayer(PLAYER);
@@ -13,7 +13,7 @@ namespace TopDown {
 
     private void OnTriggerEnter(Collider other) {
       if (other.gameObject.layer != _playerLayer || !other.TryGetComponent(out PlayerController player)) return;
-      PlayerFound.Execute(player);
+      PlayerFindForState.Execute(player);
       Debug.Log(other.gameObject.name + "Follow");
     }
   }

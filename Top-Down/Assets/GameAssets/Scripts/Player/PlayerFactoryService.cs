@@ -7,19 +7,19 @@ namespace TopDown {
     private readonly PlayerTypes _playerTypes;
     private readonly GameObject _playerPrefab;
     private readonly Transform _playerSpawnPoint;
-    private readonly InputHandler _inputHandler;
-    private readonly FollowCamera _followCamera;
+    private readonly PlayerInputService _playerInputService;
+    private readonly PlayerCamera _playerCamera;
     private readonly EnemyProvider _enemyProvider;
 
     public PlayerFactoryService(PlayerTypes playerTypes, [Inject(Id = GameIds.PlayerID)] GameObject playerPrefab,
                                 [Inject(Id = GameIds.PlayerSpawnPointID)]
                                 Transform playerSpawnPoint,
-                                InputHandler inputHandler, FollowCamera followCamera, EnemyProvider enemyProvider) {
+                                PlayerInputService playerInputService, PlayerCamera playerCamera, EnemyProvider enemyProvider) {
       _playerTypes = playerTypes;
       _playerPrefab = playerPrefab;
       _playerSpawnPoint = playerSpawnPoint;
-      _inputHandler = inputHandler;
-      _followCamera = followCamera;
+      _playerInputService = playerInputService;
+      _playerCamera = playerCamera;
       _enemyProvider = enemyProvider;
     }
 
@@ -28,9 +28,9 @@ namespace TopDown {
       GameObject player = Object.Instantiate(_playerPrefab, _playerSpawnPoint.position, Quaternion.identity);
       GameObject playerView = Object.Instantiate(playerInfo.ViewPrefab, player.transform);
       PlayerController = player.GetComponent<PlayerController>();
-      PlayerController.Initialize(_inputHandler, type, _enemyProvider, playerInfo.MoveSpeed, playerInfo.RotationSpeed,
+      PlayerController.Initialize(_playerInputService, type, _enemyProvider, playerInfo.MoveSpeed, playerInfo.RotationSpeed,
                                   playerInfo.Health, playerInfo.FireDelay, playerInfo.NumberOfRounds);
-      _followCamera.Follow(player.transform);
+      _playerCamera.Follow(player.transform);
     }
   }
 }

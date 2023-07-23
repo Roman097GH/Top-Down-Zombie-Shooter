@@ -14,43 +14,41 @@ namespace TopDown {
     [SerializeField] private float _health;
     [SerializeField] private float _numberOfRounds;
 
-    [SerializeField] private float _fireDelay;
-    [SerializeField] private float _delayTemp;
-
     [SerializeField] private float _decelerationRate = 1.5f;
     private float _movementMagnitude;
 
     private EnemyProvider _enemyProvider;
-    private InputHandler _inputHandler;
+    private PlayerInputService _playerInputService;
     private Transform _targetTransform;
 
-    private Vector3 _movement = Vector3.zero;
     private Vector3 _currentMovement = Vector3.zero;
 
     private static readonly int _velocity = Animator.StringToHash("Velocity");
     private static readonly int _shotAnimTrig = Animator.StringToHash("ShotTrig");
     private static readonly int _deathAnimTrig = Animator.StringToHash("DeathTrig");
+    private bool _fire;
+    private float _nextTimeToFire;
+    [SerializeField] private int _countShotPerMinute = 60;
 
-    public void Initialize(InputHandler inputHandler, PlayerType type, EnemyProvider enemyProvider,
+    public void Initialize(PlayerInputService playerInputService, PlayerType type, EnemyProvider enemyProvider,
                            float playerInfoMoveSpeed, float playerInfoRotationSpeed, float playerInfoHealth,
                            float playerInfoFireDelay, float playerInfoNumberOfRounds) {
-      _inputHandler = inputHandler;
+      _playerInputService = playerInputService;
       _enemyProvider = enemyProvider;
       _moveSpeed = playerInfoMoveSpeed;
       _rotationSpeed = playerInfoRotationSpeed;
       _health = playerInfoHealth;
-      _fireDelay = playerInfoFireDelay;
       _numberOfRounds = playerInfoNumberOfRounds;
 
       _animator = GetComponentInChildren<Animator>();
 
-
-      _inputHandler.OnJoystickMove.Subscribe(Move);
-      _inputHandler.OnJoystickMove.Subscribe(Rotate);
-
+      _playerInputService.OnJoystickMove.TakeUntilDestroy(this).Subscribe(HandleMovement);
+      _playerInputService.OnAttack.TakeUntilDestroy(this).Subscribe(SetFire);
       _damageable.SetHealth(_health);
       Debug.Log(gameObject.name + " Health: " + _health);
     }
+
+    private void SetFire(bool fire) => _fire = fire;
 
     private void OnValidate() => _controller = GetComponent<CharacterController>();
 
@@ -76,13 +74,11 @@ namespace TopDown {
     }
 
     private void FireDelayProcessing() {
-      _delayTemp += Time.unscaledDeltaTime;
-      if (_delayTemp > _fireDelay) {
-        if (Input.GetKeyDown(KeyCode.F)) {
-          _delayTemp = 0;
-          Shooting();
-        }
-      }
+      if (!_fire || _nextTimeToFire > Time.time) return;
+      _nextTimeToFire = Time.time + 60f / _countShotPerMinute;
+      _numberOfRounds -= 1;
+      Debug.Log(_numberOfRounds);
+      Shooting();
     }
 
     private void SetFollowTarget(Transform targetTransform) => _targetTransform = targetTransform;
@@ -94,10 +90,14 @@ namespace TopDown {
       _animator.SetTrigger(_shotAnimTrig);
     }
 
+    private void HandleMovement(Vector3 movement) {
+      Move(movement);
+      Rotate(movement);
+    }
+
     private void Move(Vector3 movement) {
-      _movement = new Vector3(movement.x, 0.0f, movement.y);
-      _currentMovement = _movement * _moveSpeed;
-      _movementMagnitude = _movement.magnitude;
+      _currentMovement = movement * _moveSpeed;
+      _movementMagnitude = movement.magnitude;
       _controller.Move(_currentMovement * Time.deltaTime);
 
       _animator.SetFloat(_velocity, _movementMagnitude);
@@ -105,8 +105,7 @@ namespace TopDown {
 
     private void Rotate(Vector3 direction) {
       if (_targetTransform != null || direction == Vector3.zero) return;
-      Vector3 movement = new Vector3(direction.x, 0.0f, direction.y);
-      RotatePlayer(movement);
+      RotatePlayer(direction);
     }
 
     private void RotatePlayer(Vector3 direction) {

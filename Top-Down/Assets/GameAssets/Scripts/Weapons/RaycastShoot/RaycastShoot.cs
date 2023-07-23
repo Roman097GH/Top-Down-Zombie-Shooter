@@ -6,8 +6,7 @@ namespace TopDown {
     private float _damage = 10f;
 
     [Header("Ray")] [SerializeField] private LayerMask _layerMask;
-
-    //[SerializeField, Min(0)] private float _distance = Mathf.Infinity;
+    
     [SerializeField, Min(0)] private float _distance = 100f;
     [SerializeField, Min(0)] private int _shotCount = 1;
 

@@ -15,6 +15,8 @@ namespace TopDown {
 
     [SerializeField] private float _attackTimer;
     [SerializeField] private float _attackPeriod = 2.5f;
+    private Vector3 _playerPosition;
+    private float _distance;
 
     private EnemyState _enemyState = EnemyState.EDefault;
 
@@ -37,8 +39,9 @@ namespace TopDown {
       _meshAgent.speed = _moveSpeed;
       _health = info.Health;
       _damage = info.Damage;
+      _attackRadius = _meshAgent.stoppingDistance;
 
-      _enemyStateCheck.PlayerFound.TakeUntilDestroy(this).Subscribe(OnPlayerChangeState);
+      _enemyStateCheck.PlayerFindForState.TakeUntilDestroy(this).Subscribe(OnPlayerChangeState);
       _enemyMakeDamageCheck.PlayerFindForAttack.TakeUntilDestroy(this).Subscribe(OnPlayerChangeAttack);
 
       _damageable.SetHealth(_health);
@@ -86,13 +89,17 @@ namespace TopDown {
     protected override void Default() { }
 
     protected override void Follow() {
-      Vector3 playerPosition = _playerController.transform.position;
-      _meshAgent.SetDestination(playerPosition);
+      _playerPosition = _playerController.transform.position;
+      _meshAgent.SetDestination(_playerPosition);
       _animator.SetTrigger(_followAnimTrig);
     }
 
     protected override void Attack() {
+      _playerPosition = _playerController.transform.position;
+      _distance = Vector3.Distance(transform.position, _playerPosition);
+
       if (!(_attackTimer > _attackPeriod)) return;
+      if (!(_distance <= _attackRadius)) return;
       _attackTimer = 0;
       _animator.SetTrigger(_attackAnimTrig);
       _playerController.GetComponent<Damageable>().TakeDamage(_damage);
