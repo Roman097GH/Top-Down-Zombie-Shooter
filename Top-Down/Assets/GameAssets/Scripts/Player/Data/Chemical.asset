@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33faec74255d5ae4383c7d25c3f3fba5, type: 3}
   m_Name: Chemical
   m_EditorClassIdentifier: 
+  <ViewPrefab>k__BackingField: {fileID: 5382987206836456895, guid: a723b7cc6cf86344ba3aeb25917d2068, type: 3}
   <MoveSpeed>k__BackingField: 5
   <RotationSpeed>k__BackingField: 5
   <Health>k__BackingField: 10
-  <ViewPrefab>k__BackingField: {fileID: 5382987206836456895, guid: a723b7cc6cf86344ba3aeb25917d2068, type: 3}
-  <Animator>k__BackingField: {fileID: 5382987206836456894, guid: a723b7cc6cf86344ba3aeb25917d2068, type: 3}
+  <FireDelay>k__BackingField: 0
+  <NumberOfRounds>k__BackingField: 20

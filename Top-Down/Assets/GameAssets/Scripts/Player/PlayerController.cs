@@ -11,55 +11,64 @@ namespace TopDown {
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotationSpeed;
-    [SerializeField] private float _health;
-    [SerializeField] private float _numberOfRounds;
+    [SerializeField] private float _initialHealth;
+    [SerializeField] private int _initialNumberOfBullets;
+    [SerializeField] private int _countShotPerMinute;
+    [SerializeField] private float _decelerationRate = 3.0f;
 
-    [SerializeField] private float _decelerationRate = 1.5f;
-    private float _movementMagnitude;
-
-    private EnemyProvider _enemyProvider;
     private PlayerInputService _playerInputService;
+    private EnemyProvider _enemyProvider;
+    private HealthItem _healthItem;
+    private BulletItem _bulletItem;
     private Transform _targetTransform;
-
-    private Vector3 _currentMovement = Vector3.zero;
 
     private static readonly int _velocity = Animator.StringToHash("Velocity");
     private static readonly int _shotAnimTrig = Animator.StringToHash("ShotTrig");
     private static readonly int _deathAnimTrig = Animator.StringToHash("DeathTrig");
-    private bool _fire;
-    private float _nextTimeToFire;
-    [SerializeField] private int _countShotPerMinute = 60;
 
-    public void Initialize(PlayerInputService playerInputService, PlayerType type, EnemyProvider enemyProvider,
+    private Vector3 _currentMovement = Vector3.zero;
+
+    private int _currentBullets;
+
+    private float _movementMagnitude;
+    private float _nextTimeToFire;
+    private float _currentHealth;
+
+    private bool _fire;
+
+    public void Initialize(PlayerInputService playerInputService, EnemyProvider enemyProvider,
                            float playerInfoMoveSpeed, float playerInfoRotationSpeed, float playerInfoHealth,
-                           float playerInfoFireDelay, float playerInfoNumberOfRounds) {
+                           int playerInfoNumberOfBullets, int playerInfoCountShotPerMinute, HealthItem healthItem,
+                           BulletItem bulletItem) {
       _playerInputService = playerInputService;
       _enemyProvider = enemyProvider;
       _moveSpeed = playerInfoMoveSpeed;
       _rotationSpeed = playerInfoRotationSpeed;
-      _health = playerInfoHealth;
-      _numberOfRounds = playerInfoNumberOfRounds;
-
+      _initialHealth = playerInfoHealth;
+      _currentHealth = _initialHealth;
+      _countShotPerMinute = playerInfoCountShotPerMinute;
+      _initialNumberOfBullets = playerInfoNumberOfBullets;
+      _currentBullets = _initialNumberOfBullets;
+      _currentBullets = Mathf.Clamp(_currentBullets, 0, _initialNumberOfBullets);
+      _healthItem = healthItem;
+      _bulletItem = bulletItem;
       _animator = GetComponentInChildren<Animator>();
 
       _playerInputService.OnJoystickMove.TakeUntilDestroy(this).Subscribe(HandleMovement);
       _playerInputService.OnAttack.TakeUntilDestroy(this).Subscribe(SetFire);
-      _damageable.SetHealth(_health);
-      Debug.Log(gameObject.name + " Health: " + _health);
-    }
+      _healthItem.PlayerFoundAddHealth.TakeUntilDestroy(this).Subscribe(_ => AddHealth());
+      _bulletItem.PlayerFoundAddBullets.TakeUntilDestroy(this).Subscribe(_ => AddBullets());
 
-    private void SetFire(bool fire) => _fire = fire;
+      _damageable.SetHealth(_currentHealth);
+    }
 
     private void OnValidate() => _controller = GetComponent<CharacterController>();
 
     private void Update() {
       FireDelayProcessing();
-
-      if (_damageable.Health.Value == 0) {
-        _animator.SetTrigger(_deathAnimTrig);
-      }
-
       GetPlayerPosition();
+      Death();
+
       Transform transformClosestEnemy = _enemyProvider.GetEnemyClosestTo(GetPlayerPosition());
       SetFollowTarget(transformClosestEnemy);
 
@@ -71,23 +80,6 @@ namespace TopDown {
       _movementMagnitude -= Time.deltaTime * _decelerationRate;
       _movementMagnitude = Mathf.Clamp(_movementMagnitude, 0.0f, 1.0f);
       _animator.SetFloat(_velocity, _movementMagnitude);
-    }
-
-    private void FireDelayProcessing() {
-      if (!_fire || _nextTimeToFire > Time.time) return;
-      _nextTimeToFire = Time.time + 60f / _countShotPerMinute;
-      _numberOfRounds -= 1;
-      Debug.Log(_numberOfRounds);
-      Shooting();
-    }
-
-    private void SetFollowTarget(Transform targetTransform) => _targetTransform = targetTransform;
-
-    private Vector3 GetPlayerPosition() => transform.position;
-
-    private void Shooting() {
-      _shootBase.Shot();
-      _animator.SetTrigger(_shotAnimTrig);
     }
 
     private void HandleMovement(Vector3 movement) {
@@ -112,6 +104,38 @@ namespace TopDown {
       if (direction != Vector3.zero) {
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction),
                                              Time.deltaTime * _rotationSpeed);
+      }
+    }
+
+    private void AddHealth() {
+      _currentHealth = _initialHealth;
+      _damageable.SetHealth(_currentHealth);
+    }
+
+    private void AddBullets() => _currentBullets = _initialNumberOfBullets;
+
+    private void SetFire(bool fire) => _fire = fire;
+
+    private void SetFollowTarget(Transform targetTransform) => _targetTransform = targetTransform;
+
+    private Vector3 GetPlayerPosition() => transform.position;
+
+    private void FireDelayProcessing() {
+      if (!_fire || _nextTimeToFire > Time.time || _currentBullets == 0) return;
+      _nextTimeToFire = Time.time + 60f / _countShotPerMinute;
+      _currentBullets -= 1;
+      Debug.Log("Current bullets: " + _currentBullets);
+      Shooting();
+    }
+
+    private void Shooting() {
+      _shootBase.Shot();
+      _animator.SetTrigger(_shotAnimTrig);
+    }
+
+    private void Death() {
+      if (_damageable.Health.Value == 0) {
+        _animator.SetTrigger(_deathAnimTrig);
       }
     }
   }

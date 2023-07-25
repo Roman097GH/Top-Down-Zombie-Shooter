@@ -16,5 +16,5 @@ MonoBehaviour:
   <MoveSpeed>k__BackingField: 10
   <RotationSpeed>k__BackingField: 10
   <Health>k__BackingField: 10
-  <FireDelay>k__BackingField: 0.65
-  <NumberOfRounds>k__BackingField: 30
+  <NumberOfBullets>k__BackingField: 10
+  <CountShotPerMinute>k__BackingField: 60

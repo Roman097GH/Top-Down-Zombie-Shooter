@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33faec74255d5ae4383c7d25c3f3fba5, type: 3}
   m_Name: Spaceman
   m_EditorClassIdentifier: 
+  <ViewPrefab>k__BackingField: {fileID: 2941675358463125990, guid: c48e8da097385a844ac838112f04f994, type: 3}
   <MoveSpeed>k__BackingField: 7.5
   <RotationSpeed>k__BackingField: 7.5
   <Health>k__BackingField: 10
-  <ViewPrefab>k__BackingField: {fileID: 2941675358463125990, guid: c48e8da097385a844ac838112f04f994, type: 3}
-  <Animator>k__BackingField: {fileID: 2941675358463125991, guid: c48e8da097385a844ac838112f04f994, type: 3}
+  <FireDelay>k__BackingField: 0
+  <NumberOfRounds>k__BackingField: 10

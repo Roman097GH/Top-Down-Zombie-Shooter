@@ -11,11 +11,9 @@ namespace TopDown {
 
     public PlayerInputService(Joystick joystick) => _joystick = joystick;
 
-    public void Tick() {
-      ReadMovement();
-    }
+    public void Tick() => ReadMovement();
 
-    public void ReadMovement() {
+    private void ReadMovement() {
       Vector2 input = _joystick.Direction;
       Vector3 movement = new(input.x, 0, input.y);
       OnJoystickMove.Execute(movement);

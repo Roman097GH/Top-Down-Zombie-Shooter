@@ -8,8 +8,9 @@ namespace TopDown {
     [SerializeField] private PlayerTypes _playerTypes;
     [SerializeField] private Transform _playerSpawnPoint;
     [SerializeField] private PlayerCamera _playerCamera;
-
     [SerializeField] private EnemyProvider _enemyProvider;
+    [SerializeField] private HealthItem _healthItem;
+    [SerializeField] private BulletItem _bulletItem;
 
     public override void InstallBindings() {
       Container.BindInterfacesAndSelfTo<PlayerInputService>().AsSingle().NonLazy();
@@ -25,6 +26,8 @@ namespace TopDown {
       Container.Bind<Joystick>().FromInstance(_joystick);
       Container.Bind<PlayerCamera>().FromInstance(_playerCamera);
       Container.Bind<EnemyProvider>().FromInstance(_enemyProvider);
+      Container.Bind<HealthItem>().FromInstance(_healthItem);
+      Container.Bind<BulletItem>().FromInstance(_bulletItem);
 
       BindScriptableObjects();
     }
