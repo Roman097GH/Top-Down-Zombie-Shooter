@@ -14,5 +14,7 @@ namespace TopDown {
     protected abstract void Follow();
     protected abstract void Attack();
     protected abstract void Death();
+
+    public abstract Vector3 GetPosition();
   }
 }

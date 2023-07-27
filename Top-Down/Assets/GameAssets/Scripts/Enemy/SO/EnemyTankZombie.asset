@@ -18,5 +18,5 @@ MonoBehaviour:
   - <FollowRadius>k__BackingField: 10
     <AttackRadius>k__BackingField: 1
     <MoveSpeed>k__BackingField: 0.5
-    <Health>k__BackingField: 4
+    <Health>k__BackingField: 2
     <Damage>k__BackingField: 2

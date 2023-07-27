@@ -1,37 +1,48 @@
 using TMPro;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace TopDown
 {
-    public class GamePanelUI : MonoBehaviour, IInitializable, ITickable {
-      [SerializeField] private Slider _sliderHealthBar;
-      [SerializeField] private TextMeshProUGUI _enemiesCount;
-      [SerializeField] private TextMeshProUGUI _numberOfRounds;
-      
-      [SerializeField] private Button _attackButton;
-       //public ReactiveCommand OnAttack = new ();
+    public class GamePanelUI : MonoBehaviour, IInitializable
+    {
+        [SerializeField] private TextMeshProUGUI _enemiesCount;
+        [SerializeField] private TextMeshProUGUI _bestScore;
 
-      private void UpdateInfo() {
-        _enemiesCount.text = "Enemies killed: ";
-        _numberOfRounds.text = "Number of rounds: ";
-      }
+        private CompositeDisposable _disposable;
+        private ScoreService _scoreService;
 
-      public void Initialize() {
-
-      }
-
-      public void Tick() {
-         
-        //_attackButton.onClick.AddListener(ButtonPressed);  
+        private int _initialEnemiesCount;
         
-        
-      }
+        [Inject]
+        private void Construct(ScoreService scoreService)
+        {
+            _scoreService = scoreService;
+        }
 
-      // public void ButtonPressed() {
-      //   OnAttack.Execute();
-      // }
+        public void Initialize()
+        {
+            _initialEnemiesCount = _scoreService.InitialEnemiesCount.Value;
+            _disposable = new CompositeDisposable();
+            AddListeners();
+        }
+
+        private void AddListeners()
+        {
+            _scoreService.EnemiesKilled.Subscribe(_ => UpdateInfo()).AddTo(_disposable);
+            _scoreService.BestKillScore.Subscribe(_ => UpdateInfo()).AddTo(_disposable);
+        }
+
+        private void UpdateInfo()
+        {
+            _enemiesCount.text = "Enemies killed: " + _scoreService.EnemiesKilled.Value + " / " + _initialEnemiesCount;
+            _bestScore.text = "Best kill Score: " + _scoreService.BestKillScore.Value;
+        }
+
+        private void OnDestroy()
+        {
+            _disposable.Dispose();
+        }
     }
 }

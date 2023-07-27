@@ -1,31 +1,47 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
-namespace TopDown {
-  public class EnemyProvider : MonoBehaviour {
-    private List<Enemy> _enemies;
+namespace TopDown
+{
+    public class EnemyProvider : ITickable
+    {
+        private readonly List<EnemyBase> _enemies = new();
 
-    private void Start() => AddEnemies();
+        private readonly ScoreService _scoreService;
 
-    private void AddEnemies() => _enemies = new List<Enemy>(FindObjectsOfType<Enemy>());
+        public EnemyProvider(ScoreService scoreService)
+        {
+            _scoreService = scoreService;
+        }
 
-    public Transform GetEnemyClosestTo(Vector3 pos) {
-      if (_enemies.Count == 0) {
-        return null;
-      }
+        public void AddEnemy(EnemyBase enemy)
+        {
+            _enemies.Add(enemy);
+            int countEnemies = _enemies.Count;
+            _scoreService.SetInitialEnemiesCount(countEnemies);
+        }
 
-      Enemy enemy = _enemies.OrderBy(enemy => Vector3.Distance(pos, enemy.GetPosition())).First();
-      return (enemy.transform);
+        public Transform GetEnemyClosestTo(Vector3 pos)
+        {
+            if (_enemies.Count == 0)
+            {
+                return null;
+            }
+
+            EnemyBase enemy = _enemies.OrderBy(enemy => Vector3.Distance(pos, enemy.GetPosition())).First();
+            return (enemy.transform);
+        }
+
+        public void Tick()
+        {
+            for (int i = 0; i < _enemies.Count; i++)
+            {
+                if (_enemies[i] != null) continue;
+                _enemies.RemoveAt(i);
+                _scoreService.SetEnemiesKilledCount(_enemies.Count);
+            }
+        }
     }
-
-    private void Update() {
-      for (int i = 0; i < _enemies.Count; i++) {
-        if (_enemies[i] != null) continue;
-        _enemies.RemoveAt(i);
-        Debug.Log(_enemies.Count);
-      }
-    }
-  }
 }

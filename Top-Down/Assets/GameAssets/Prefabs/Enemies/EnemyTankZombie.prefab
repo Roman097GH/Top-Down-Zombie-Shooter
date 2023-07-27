@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a913adbb2f9ae4ebc074268cedfe21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slider: {fileID: 7097290580269816138}
+  _healthBarSlider: {fileID: 6111108519362111147}
 --- !u!136 &6835204346696770921
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45773da671c6bd47b49f7fc23938628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slider: {fileID: 7097290580269816138}
+  _healthBarSlider: {fileID: 6111108519362111147}
   _enemyName: 
   _attackRadius: 0
   _moveSpeed: 0
@@ -324,11 +324,31 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6158702689731419920, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158702689731419920, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158702689731419920, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158702689731419920, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158702689731419920, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
---- !u!114 &7097290580269816138 stripped
+--- !u!114 &6111108519362111147 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 562943024298352298, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3566386149432893771, guid: ea9791ddb8d44474bbcec609b9748edf, type: 3}
   m_PrefabInstance: {fileID: 7327740996268263392}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

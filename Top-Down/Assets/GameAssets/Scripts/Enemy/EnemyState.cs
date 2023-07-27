@@ -1,8 +1,8 @@
 namespace TopDown {
   public enum EnemyState {
-    EDefault,
-    EFollow,
-    EAttack,
-    EDeath,
+    Default,
+    Follow,
+    Attack,
+    Death,
   }
 }

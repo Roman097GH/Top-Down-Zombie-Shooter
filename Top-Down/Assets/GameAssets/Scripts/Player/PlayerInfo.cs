@@ -10,6 +10,6 @@ namespace TopDown {
     [field: SerializeField] public int NumberOfBullets { get; private set; }
     [field: SerializeField] public int CountShotPerMinute { get; private set; }
 
-    //[field: SerializeField] public float Damage { get; private set; }
+    [field: SerializeField] public float Damage { get; private set; }
   }
 }
