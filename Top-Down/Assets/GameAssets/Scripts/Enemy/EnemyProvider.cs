@@ -9,18 +9,18 @@ namespace TopDown
     {
         private readonly List<EnemyBase> _enemies = new();
 
-        private readonly ScoreService _scoreService;
+        private readonly GameSessionStats _gameSessionStats;
 
-        public EnemyProvider(ScoreService scoreService)
+        public EnemyProvider(GameSessionStats gameSessionStats)
         {
-            _scoreService = scoreService;
+            _gameSessionStats = gameSessionStats;
         }
 
         public void AddEnemy(EnemyBase enemy)
         {
             _enemies.Add(enemy);
             int countEnemies = _enemies.Count;
-            _scoreService.SetInitialEnemiesCount(countEnemies);
+            _gameSessionStats.SetInitialEnemiesCount(countEnemies);
         }
 
         public Transform GetEnemyClosestTo(Vector3 pos)
@@ -40,7 +40,7 @@ namespace TopDown
             {
                 if (_enemies[i] != null) continue;
                 _enemies.RemoveAt(i);
-                _scoreService.SetEnemiesKilledCount(_enemies.Count);
+                _gameSessionStats.SetEnemiesKilledCount(_enemies.Count);
             }
         }
     }

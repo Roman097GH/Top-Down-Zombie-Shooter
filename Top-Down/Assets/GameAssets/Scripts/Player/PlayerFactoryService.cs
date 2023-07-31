@@ -38,9 +38,8 @@ namespace TopDown
             Object.Instantiate(playerInfo.ViewPrefab, player.transform);
             _playerController = player.GetComponent<PlayerController>();
             _playerController.Initialize(_playerInputService, _enemyProvider, playerInfo.MoveSpeed,
-                playerInfo.RotationSpeed,
-                playerInfo.Health, playerInfo.NumberOfBullets, playerInfo.CountShotPerMinute, playerInfo.Damage,
-                _healthItem, _bulletItem);
+                playerInfo.RotationSpeed, playerInfo.Health, playerInfo.NumberOfBullets, playerInfo.CountShotPerMinute,
+                playerInfo.Damage, playerInfo.DecelerationRate, _healthItem, _bulletItem);
             _playerCamera.Follow(player.transform);
         }
     }

@@ -1,7 +1,9 @@
-namespace TopDown {
-  public enum PlayerType {
-    EMale,
-    EChemicalChemical,
-    ESpaceman,
-  }
+namespace TopDown
+{
+    public enum PlayerType
+    {
+        Male,
+        Chemical,
+        Spaceman
+    }
 }

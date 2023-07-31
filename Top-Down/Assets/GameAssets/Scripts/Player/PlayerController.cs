@@ -11,11 +11,12 @@ namespace TopDown
         [SerializeField] private Damageable _damageable;
         [SerializeField] private Animator _animator;
 
-        [SerializeField] private float _moveSpeed;
+        [Header("Player info")] [SerializeField]
+        private float _moveSpeed;
+
         [SerializeField] private float _rotationSpeed;
         [SerializeField] private float _initialHealth;
-        [SerializeField] private float _damage;
-        [SerializeField] private float _decelerationRate = 3.0f; // Добавить в ScriptableObject
+        [SerializeField] private float _decelerationRate;
         [SerializeField] private int _initialNumberOfBullets;
         [SerializeField] private int _countShotPerMinute;
 
@@ -39,13 +40,15 @@ namespace TopDown
 
         private bool _fire;
 
-        public ReactiveProperty<int> BulletsCount = new();
-        public ReactiveProperty<float> Damage = new();
+        [HideInInspector] public ReactiveProperty<int> BulletsCount = new();
+        [HideInInspector] public ReactiveProperty<float> Damage = new();
+
+        private float _distanceToTarget;
 
         public void Initialize(PlayerInputService playerInputService, EnemyProvider enemyProvider,
             float playerInfoMoveSpeed, float playerInfoRotationSpeed, float playerInfoHealth,
-            int playerInfoNumberOfBullets, int playerInfoCountShotPerMinute, float playerInfoDamage, HealthItem healthItem,
-            BulletItem bulletItem)
+            int playerInfoNumberOfBullets, int playerInfoCountShotPerMinute, float playerInfoDamage,
+            float playerInfoDecelerationRate, HealthItem healthItem, BulletItem bulletItem)
         {
             _playerInputService = playerInputService;
             _enemyProvider = enemyProvider;
@@ -58,6 +61,7 @@ namespace TopDown
             _currentBullets = _initialNumberOfBullets;
             BulletsCount.Value = _currentBullets;
             _currentBullets = Mathf.Clamp(_currentBullets, 0, _initialNumberOfBullets);
+            _decelerationRate = playerInfoDecelerationRate;
             _healthItem = healthItem;
             _bulletItem = bulletItem;
             _animator = GetComponentInChildren<Animator>();
@@ -83,6 +87,9 @@ namespace TopDown
 
             Transform transformClosestEnemy = _enemyProvider.GetEnemyClosestTo(GetPlayerPosition());
             SetFollowTarget(transformClosestEnemy);
+
+            // _distanceToTarget = Vector3.SqrMagnitude(transform.position - _targetTransform.position);
+            // Debug.Log(_distanceToTarget);
 
             if (_targetTransform != null)
             {

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace TopDown
@@ -11,17 +10,21 @@ namespace TopDown
         [SerializeField] private PlayerTypes _playerTypes;
         [SerializeField] private Transform _playerSpawnPoint;
         [SerializeField] private PlayerCamera _playerCamera;
-        [SerializeField] private GamePanelUI _gamePanelObjectUI;
+        [SerializeField] private GameActivePanelUI _gameActivePanelObjectUI;
+        [SerializeField] private BestStatsUI _gameWinPanelObjectUI;
         [SerializeField] private HealthItem _healthItem;
         [SerializeField] private BulletItem _bulletItem;
 
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<GameplayController>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<PlayerInputService>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<EnemyProvider>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<ScoreService>().AsSingle();
 
-            Container.BindInterfacesTo<GameplayController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<GameSessionStats>().AsSingle();
+
+            Container.BindInterfacesTo<GameActivePanelUI>().FromInstance(_gameActivePanelObjectUI);
+            Container.BindInterfacesTo<BestStatsUI>().FromInstance(_gameWinPanelObjectUI);
 
             Container.BindInstance(_playerSpawnPoint).WithId(GameIds.PlayerSpawnPointID);
             Container.BindInstance(_playerPrefab).WithId(GameIds.PlayerID);
@@ -30,11 +33,9 @@ namespace TopDown
             Container.Bind<EnemyFactoryService>().AsSingle();
 
             Container.Bind<PlayerCamera>().FromInstance(_playerCamera);
-            Container.Bind<Joystick>().FromInstance(_joystick);
             Container.Bind<HealthItem>().FromInstance(_healthItem);
             Container.Bind<BulletItem>().FromInstance(_bulletItem);
-
-            Container.BindInterfacesTo<GamePanelUI>().FromInstance(_gamePanelObjectUI);
+            Container.Bind<Joystick>().FromInstance(_joystick);
 
             BindScriptableObjects();
         }

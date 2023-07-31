@@ -13,8 +13,8 @@ namespace TopDown
         [SerializeField, Min(0)] private float _distance = 100f;
         [SerializeField, Min(0)] private int _shotCount = 1;
 
-        [Header("Particle System")] [SerializeField]
-        private ParticleSystem _muzzleEffect;
+        [Header("Particle System")]
+        [SerializeField] private ParticleSystem _muzzleEffect;
 
         [SerializeField] private ParticleSystem _hitEffectPrefab;
         [SerializeField, Min(0f)] private float _hitEffectDestroyDelay = 2f;
@@ -54,8 +54,7 @@ namespace TopDown
 
             if (!Physics.Raycast(ray, out RaycastHit hitInfo, _distance, _layerMask)) return;
             var hitCollider = hitInfo.collider;
-
-            // GetComponentInParent???
+            
             if (hitCollider.GetComponentInParent<Enemy>().TryGetComponent(out IDamageable damageable))
             {
                 damageable.TakeDamage(_damage);
@@ -73,6 +72,7 @@ namespace TopDown
             if (_muzzleEffect != null)
             {
                 _muzzleEffect.Play();
+
             }
 
             if (_audioSource != null && _audioClip != null)

@@ -15,8 +15,6 @@ MonoBehaviour:
   <Name>k__BackingField: EnemyTankZombie
   <Enemy>k__BackingField: {fileID: 1316599413848358458, guid: 423ff8d42a0dd7a419cbb496a40dd083, type: 3}
   <EnemyLevelInfos>k__BackingField:
-  - <FollowRadius>k__BackingField: 10
-    <AttackRadius>k__BackingField: 1
-    <MoveSpeed>k__BackingField: 0.5
-    <Health>k__BackingField: 2
+  - <Health>k__BackingField: 1
     <Damage>k__BackingField: 2
+    <MoveSpeed>k__BackingField: 0.5

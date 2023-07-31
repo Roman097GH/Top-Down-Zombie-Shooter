@@ -1,24 +1,35 @@
 using JetBrains.Annotations;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
-namespace TopDown {
-  [UsedImplicitly]
-  public class GameplayController : IInitializable, ITickable {
-    private readonly PlayerFactoryService _playerFactoryService;
+namespace TopDown
+{
+    [UsedImplicitly]
+    public class GameplayController : IInitializable
+    {
+        private readonly PlayerFactoryService _playerFactoryService;
+        private readonly CharacterSelection _characterSelection;
+        
 
-    private readonly EnemyProvider _enemyProvider;
+        public readonly ReactiveProperty<GameState> State = new(GameState.GameActive);
+        private GameParametrs _gameParametrs;
 
-    public GameplayController(PlayerFactoryService playerFactoryService, EnemyProvider enemyProvider) {
-      _playerFactoryService = playerFactoryService;
-      
-      _enemyProvider = enemyProvider;
+        public GameplayController(PlayerFactoryService playerFactoryService, GameParametrs gameParametrs)
+        {
+            _gameParametrs = gameParametrs;
+            _playerFactoryService = playerFactoryService;
+        }
+
+        void IInitializable.Initialize()
+        {
+            _playerFactoryService.Create(_gameParametrs.PlayerType);
+        }
+        
+        public void GameWin()
+        {
+            Time.timeScale = 0;
+            State.Value = GameState.GameWin;
+        }
     }
-
-    void IInitializable.Initialize() {
-      _playerFactoryService.Create(PlayerType.EMale);
-    }
-
-    public void Tick() { }
-  }
 }
