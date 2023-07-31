@@ -3,11 +3,12 @@ using UnityEngine.SceneManagement;
 
 namespace TopDown
 {
-    public class StartMenuButtonUI : MonoBehaviour
+    public class StartMenuButtonsUI : MonoBehaviour
     {
         public void StartGame()
         {
-            SceneManager.LoadScene(2);
+            Time.timeScale = 1;
+            SceneManager.LoadScene(1);
         }
 
         public void ExitGame()

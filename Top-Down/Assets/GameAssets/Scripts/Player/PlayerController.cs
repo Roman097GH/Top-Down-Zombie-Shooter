@@ -1,5 +1,6 @@
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace TopDown
 {
@@ -26,6 +27,8 @@ namespace TopDown
         private BulletItem _bulletItem;
         private Transform _targetTransform;
 
+        //private GameplayController _gameplayController;
+
         private static readonly int _velocity = Animator.StringToHash("Velocity");
         private static readonly int _shotAnimTrig = Animator.StringToHash("ShotTrig");
         private static readonly int _deathAnimTrig = Animator.StringToHash("DeathTrig");
@@ -44,7 +47,7 @@ namespace TopDown
         [HideInInspector] public ReactiveProperty<float> Damage = new();
 
         private float _distanceToTarget;
-
+        
         public void Initialize(PlayerInputService playerInputService, EnemyProvider enemyProvider,
             float playerInfoMoveSpeed, float playerInfoRotationSpeed, float playerInfoHealth,
             int playerInfoNumberOfBullets, int playerInfoCountShotPerMinute, float playerInfoDamage,
@@ -75,6 +78,9 @@ namespace TopDown
             _bulletItem.PlayerFoundAddBullets.TakeUntilDestroy(this).Subscribe(_ => AddBullets());
 
             _damageable.SetHealth(_currentHealth);
+
+            //_gameplayController = gameplayController;
+
         }
 
         private void OnValidate() => _controller = GetComponent<CharacterController>();
@@ -88,11 +94,11 @@ namespace TopDown
             Transform transformClosestEnemy = _enemyProvider.GetEnemyClosestTo(GetPlayerPosition());
             SetFollowTarget(transformClosestEnemy);
 
-            // _distanceToTarget = Vector3.SqrMagnitude(transform.position - _targetTransform.position);
-            // Debug.Log(_distanceToTarget);
-
             if (_targetTransform != null)
             {
+                // _distanceToTarget = Vector3.SqrMagnitude(transform.position - _targetTransform.position);
+                // Debug.Log(_distanceToTarget);
+
                 RotatePlayer(_targetTransform.position - transform.position);
             }
 

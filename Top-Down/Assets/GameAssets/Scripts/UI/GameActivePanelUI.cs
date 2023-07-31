@@ -16,6 +16,8 @@ namespace TopDown
         private GameSessionStats _gameSessionStats;
         private GameplayController _gameplayController;
 
+        //private PlayerFactoryService _playerFactory;
+
         private int _initialEnemiesCount;
 
         private float _timer;
@@ -25,6 +27,7 @@ namespace TopDown
         {
             _gameSessionStats = gameSessionStats;
             _gameplayController = gameplayController;
+            //_playerFactory = playerFactory;
         }
 
         private void Update()

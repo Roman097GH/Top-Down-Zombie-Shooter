@@ -14,6 +14,8 @@ namespace TopDown
         [SerializeField] private BestStatsUI _gameWinPanelObjectUI;
         [SerializeField] private HealthItem _healthItem;
         [SerializeField] private BulletItem _bulletItem;
+        
+        
 
         public override void InstallBindings()
         {

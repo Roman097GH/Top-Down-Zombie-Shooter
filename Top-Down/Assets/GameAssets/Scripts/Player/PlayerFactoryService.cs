@@ -14,6 +14,7 @@ namespace TopDown
         private readonly EnemyProvider _enemyProvider;
         private readonly HealthItem _healthItem;
         private readonly BulletItem _bulletItem;
+        //private readonly GameplayController _gameplayController;
 
         public PlayerFactoryService(PlayerTypes playerTypes, [Inject(Id = GameIds.PlayerID)] GameObject playerPrefab,
             [Inject(Id = GameIds.PlayerSpawnPointID)]
@@ -29,6 +30,9 @@ namespace TopDown
             _enemyProvider = enemyProvider;
             _healthItem = healthItem;
             _bulletItem = bulletItem;
+            
+            //_gameplayController = gameplayController;
+
         }
 
         public void Create(PlayerType type)
