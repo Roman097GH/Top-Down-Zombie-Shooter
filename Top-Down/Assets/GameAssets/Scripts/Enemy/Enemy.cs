@@ -2,6 +2,7 @@ using System;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 namespace TopDown
 {
@@ -10,8 +11,9 @@ namespace TopDown
         [SerializeField, HideInInspector] private EnemyMakeDamageCheck _enemyMakeDamageCheck;
         [SerializeField, HideInInspector] private EnemyStateCheck _enemyStateCheck;
         [SerializeField, HideInInspector] private NavMeshAgent _meshAgent;
-        [SerializeField, HideInInspector] private Damageable _damageable;
         [SerializeField] private Animator _animator;
+        
+        [SerializeField] private Slider _healthBarSlider;
 
         private PlayerController _playerController;
 
@@ -31,7 +33,6 @@ namespace TopDown
             _enemyMakeDamageCheck = GetComponentInChildren<EnemyMakeDamageCheck>();
             _enemyStateCheck = GetComponentInChildren<EnemyStateCheck>();
             _meshAgent = GetComponent<NavMeshAgent>();
-            _damageable = GetComponent<Damageable>();
         }
 
         public override void Initialize(SOEnemy enemyInfo, int enemyLevel)
@@ -48,9 +49,19 @@ namespace TopDown
             _enemyStateCheck.PlayerFindForState.TakeUntilDestroy(this).Subscribe(OnPlayerChangeState);
             _enemyMakeDamageCheck.PlayerFindForAttack.TakeUntilDestroy(this).Subscribe(OnPlayerChangeAttack);
 
-            _damageable.SetHealth(_health);
+            SetHealth(_health);
+
+            Health.TakeUntilDestroy(this).Subscribe(OnHealthChange);
+            
+            _healthBarSlider.maxValue = Health.Value;
+            _healthBarSlider.value = _healthBarSlider.maxValue;
         }
 
+        private void OnHealthChange(float health)
+        {
+            _healthBarSlider.value = health;
+        }
+        
         private void OnPlayerChangeState(PlayerController playerController)
         {
             _playerController = playerController;
@@ -66,11 +77,8 @@ namespace TopDown
         private void Update()
         {
             _attackTimer += Time.unscaledDeltaTime;
-
-            if (_damageable.Health.Value == 0)
-            {
-                _enemyState = EnemyState.Death;
-            }
+            
+            
 
             switch (_enemyState)
             {
@@ -85,10 +93,6 @@ namespace TopDown
                 case EnemyState.Attack:
                     Follow();
                     Attack();
-                    break;
-
-                case EnemyState.Death:
-                    Death();
                     break;
 
                 default: throw new ArgumentOutOfRangeException();
@@ -118,7 +122,7 @@ namespace TopDown
             _playerController.GetComponent<Damageable>().TakeDamage(_damage);
         }
 
-        protected override void Death()
+        protected override void PerformDeath()
         {
             _animator.SetTrigger(_deathAnimTrig);
             Destroy(gameObject, 1.5f);

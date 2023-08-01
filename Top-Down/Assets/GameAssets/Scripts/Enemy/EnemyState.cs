@@ -3,6 +3,5 @@ namespace TopDown {
     Default,
     Follow,
     Attack,
-    Death,
   }
 }

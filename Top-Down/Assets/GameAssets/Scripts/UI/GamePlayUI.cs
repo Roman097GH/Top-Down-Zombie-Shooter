@@ -9,6 +9,7 @@ namespace TopDown
         [SerializeField] private GameActivePanelUI _gameActivePanelUI;
         [SerializeField] private GameObject _gameWinUI;
         [SerializeField] private GameObject _gamePauseUI;
+        [SerializeField] private GameObject _gameOverUI;
 
         private GameplayController _gameplayController;
 
@@ -31,8 +32,9 @@ namespace TopDown
         private void TogglePanels(GameState gameState)
         {
             _gameActivePanelUI.gameObject.SetActive(gameState == GameState.GameActive);
-            _gameWinUI.gameObject.SetActive(gameState == GameState.GameWin);
             _gamePauseUI.gameObject.SetActive(gameState == GameState.GamePaused);
+            _gameWinUI.gameObject.SetActive(gameState == GameState.GameWin);
+            _gameOverUI.gameObject.SetActive(gameState == GameState.GameOver);
         }
     }
 }

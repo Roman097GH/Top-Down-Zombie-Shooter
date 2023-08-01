@@ -4,6 +4,7 @@ namespace TopDown
     {
         GameActive,
         GamePaused,
-        GameWin
+        GameWin,
+        GameOver
     }
 }

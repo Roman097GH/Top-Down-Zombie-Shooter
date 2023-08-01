@@ -1,15 +1,14 @@
+using System;
 using UniRx;
 using UnityEngine;
-using Zenject;
 
 namespace TopDown
 {
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : Damageable
     {
         [SerializeField, HideInInspector] private CharacterController _controller;
         [SerializeField] private ShootBase _shootBase;
-        [SerializeField] private Damageable _damageable;
         [SerializeField] private Animator _animator;
 
         [Header("Player info")] [SerializeField]
@@ -26,8 +25,6 @@ namespace TopDown
         private HealthItem _healthItem;
         private BulletItem _bulletItem;
         private Transform _targetTransform;
-
-        //private GameplayController _gameplayController;
 
         private static readonly int _velocity = Animator.StringToHash("Velocity");
         private static readonly int _shotAnimTrig = Animator.StringToHash("ShotTrig");
@@ -46,8 +43,10 @@ namespace TopDown
         [HideInInspector] public ReactiveProperty<int> BulletsCount = new();
         [HideInInspector] public ReactiveProperty<float> Damage = new();
 
+        public event Action OnDeath;
+
         private float _distanceToTarget;
-        
+
         public void Initialize(PlayerInputService playerInputService, EnemyProvider enemyProvider,
             float playerInfoMoveSpeed, float playerInfoRotationSpeed, float playerInfoHealth,
             int playerInfoNumberOfBullets, int playerInfoCountShotPerMinute, float playerInfoDamage,
@@ -77,19 +76,18 @@ namespace TopDown
             _healthItem.PlayerFoundAddHealth.TakeUntilDestroy(this).Subscribe(_ => AddHealth());
             _bulletItem.PlayerFoundAddBullets.TakeUntilDestroy(this).Subscribe(_ => AddBullets());
 
-            _damageable.SetHealth(_currentHealth);
-
-            //_gameplayController = gameplayController;
-
+            SetHealth(_currentHealth);
         }
 
         private void OnValidate() => _controller = GetComponent<CharacterController>();
 
+        
+        
+        
         private void Update()
         {
             FireDelayProcessing();
             GetPlayerPosition();
-            Death();
 
             Transform transformClosestEnemy = _enemyProvider.GetEnemyClosestTo(GetPlayerPosition());
             SetFollowTarget(transformClosestEnemy);
@@ -141,7 +139,7 @@ namespace TopDown
         private void AddHealth()
         {
             _currentHealth = _initialHealth;
-            _damageable.SetHealth(_currentHealth);
+            SetHealth(_currentHealth);
         }
 
         private void AddBullets() => _currentBullets = _initialNumberOfBullets;
@@ -168,12 +166,10 @@ namespace TopDown
             _animator.SetTrigger(_shotAnimTrig);
         }
 
-        private void Death()
+        protected override void PerformDeath()
         {
-            if (_damageable.Health.Value == 0)
-            {
-                _animator.SetTrigger(_deathAnimTrig);
-            }
+            _animator.SetTrigger(_deathAnimTrig);
+            OnDeath?.Invoke();
         }
     }
 }

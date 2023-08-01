@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5623075687540017386}
   - component: {fileID: 2798890425651029134}
   - component: {fileID: 256872329290629477}
+  - component: {fileID: 7007810206954302676}
   m_Layer: 10
   m_Name: EnemyRegularZombie
   m_TagString: Untagged
@@ -84,6 +85,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &7007810206954302676
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2223292311514416012}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!1 &3166768871927952984
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3002998376863587101
 Transform:
   m_ObjectHideFlags: 0
