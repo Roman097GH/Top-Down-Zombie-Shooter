@@ -50,7 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45773da671c6bd47b49f7fc23938628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBarSlider: {fileID: 269297846249124090}
   _enemyName: 
   _attackRadius: 0
   _moveSpeed: 0
@@ -59,8 +58,8 @@ MonoBehaviour:
   _enemyMakeDamageCheck: {fileID: 3748579020360556287}
   _enemyStateCheck: {fileID: 6068755260280050576}
   _meshAgent: {fileID: 256872329290629477}
-  _damageable: {fileID: 2798890425651029134}
   _animator: {fileID: 2223292311565924451}
+  _healthBarSlider: {fileID: 269297846249124090}
   _attackTimer: 0
   _attackPeriod: 2.5
 --- !u!195 &256872329290629477
@@ -202,7 +201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a913adbb2f9ae4ebc074268cedfe21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBarSlider: {fileID: 269297846249124090}
 --- !u!136 &903079961896095567
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -350,6 +348,14 @@ PrefabInstance:
     - target: {fileID: 126520413224527897, guid: 042872c1bba04d84eb9f9e686d669877, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118385506803497071, guid: 042872c1bba04d84eb9f9e686d669877, type: 3}
+      propertyPath: m_Value
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806571184223039829, guid: 042872c1bba04d84eb9f9e686d669877, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5383334478864263035, guid: 042872c1bba04d84eb9f9e686d669877, type: 3}
       propertyPath: m_Value

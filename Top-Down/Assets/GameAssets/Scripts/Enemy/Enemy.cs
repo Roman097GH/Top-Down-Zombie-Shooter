@@ -12,15 +12,14 @@ namespace TopDown
         [SerializeField, HideInInspector] private EnemyStateCheck _enemyStateCheck;
         [SerializeField, HideInInspector] private NavMeshAgent _meshAgent;
         [SerializeField] private Animator _animator;
-        
         [SerializeField] private Slider _healthBarSlider;
 
         private PlayerController _playerController;
 
         [SerializeField] private float _attackTimer;
         [SerializeField] private float _attackPeriod = 2.5f;
-        private Vector3 _playerPosition;
         private float _distance;
+        private Vector3 _playerPosition;
 
         private EnemyState _enemyState = EnemyState.Default;
 
@@ -46,13 +45,12 @@ namespace TopDown
             _damage = info.Damage;
             _attackRadius = _meshAgent.stoppingDistance;
 
-            _enemyStateCheck.PlayerFindForState.TakeUntilDestroy(this).Subscribe(OnPlayerChangeState);
-            _enemyMakeDamageCheck.PlayerFindForAttack.TakeUntilDestroy(this).Subscribe(OnPlayerChangeAttack);
-
             SetHealth(_health);
 
-            Health.TakeUntilDestroy(this).Subscribe(OnHealthChange);
+            _enemyStateCheck.PlayerFoundForState.TakeUntilDestroy(this).Subscribe(OnPlayerChangeState);
+            _enemyMakeDamageCheck.PlayerFoundForAttack.TakeUntilDestroy(this).Subscribe(OnPlayerChangeAttack);
             
+            Health.TakeUntilDestroy(this).Subscribe(OnHealthChange);
             _healthBarSlider.maxValue = Health.Value;
             _healthBarSlider.value = _healthBarSlider.maxValue;
         }
@@ -61,7 +59,7 @@ namespace TopDown
         {
             _healthBarSlider.value = health;
         }
-        
+
         private void OnPlayerChangeState(PlayerController playerController)
         {
             _playerController = playerController;
@@ -78,8 +76,6 @@ namespace TopDown
         {
             _attackTimer += Time.unscaledDeltaTime;
             
-            
-
             switch (_enemyState)
             {
                 case EnemyState.Default:

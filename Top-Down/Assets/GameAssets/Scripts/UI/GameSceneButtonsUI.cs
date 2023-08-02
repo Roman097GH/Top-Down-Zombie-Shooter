@@ -28,14 +28,14 @@ namespace TopDown
         
         public void RestartGame()
         {
-            Time.timeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Time.timeScale = 1;
         }
 
         public void MenuGame()
         {
-            Time.timeScale = 1;
             SceneManager.LoadScene(0);
+            Time.timeScale = 1;
         }
         
         public void ExitGame()

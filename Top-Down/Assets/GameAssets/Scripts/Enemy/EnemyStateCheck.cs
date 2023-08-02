@@ -7,7 +7,7 @@ namespace TopDown
     {
         private const string PLAYER = "Player";
         private int _playerLayer;
-        public readonly ReactiveCommand<PlayerController> PlayerFindForState = new();
+        public readonly ReactiveCommand<PlayerController> PlayerFoundForState = new();
 
         private void Awake()
         {
@@ -17,8 +17,7 @@ namespace TopDown
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.layer != _playerLayer || !other.TryGetComponent(out PlayerController player)) return;
-            PlayerFindForState.Execute(player);
-            Debug.Log(other.gameObject.name + "Follow");
+            PlayerFoundForState.Execute(player);
         }
     }
 }

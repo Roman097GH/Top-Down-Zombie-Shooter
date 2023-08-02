@@ -7,8 +7,8 @@ namespace TopDown
     {
         public void StartGame()
         {
-            Time.timeScale = 1;
             SceneManager.LoadScene(1);
+            Time.timeScale = 1;
         }
 
         public void ExitGame()

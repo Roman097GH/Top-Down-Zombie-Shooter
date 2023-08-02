@@ -110,12 +110,14 @@ MonoBehaviour:
   _rotationSpeed: 0
   _initialHealth: 0
   _decelerationRate: 0
-  _initialNumberOfBullets: 0
   _countShotPerMinute: 0
+  InitialNumberOfBullets:
+    value: 0
   BulletsCount:
     value: 0
   Damage:
     value: 0
+  _muzzleEffect: {fileID: 4271093393614929224, guid: 87ee7299dd44ed747af24dbb91bcd33b, type: 3}
 --- !u!114 &-1988675681506115184
 MonoBehaviour:
   m_ObjectHideFlags: 0

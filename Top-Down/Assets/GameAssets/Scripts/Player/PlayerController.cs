@@ -11,14 +11,17 @@ namespace TopDown
         [SerializeField] private ShootBase _shootBase;
         [SerializeField] private Animator _animator;
 
-        [Header("Player info")] [SerializeField]
-        private float _moveSpeed;
+        [Header("Player info")]
+        [SerializeField] private float _moveSpeed;
 
         [SerializeField] private float _rotationSpeed;
-        [SerializeField] private float _initialHealth;
         [SerializeField] private float _decelerationRate;
-        [SerializeField] private int _initialNumberOfBullets;
         [SerializeField] private int _countShotPerMinute;
+
+        [HideInInspector] public ReactiveProperty<float> InitialHealth;
+        [HideInInspector] public ReactiveProperty<int> InitialNumberOfBullets;
+        [HideInInspector] public ReactiveProperty<int> BulletsCount = new();
+        [HideInInspector] public ReactiveProperty<float> Damage = new();
 
         private PlayerInputService _playerInputService;
         private EnemyProvider _enemyProvider;
@@ -40,32 +43,29 @@ namespace TopDown
 
         private bool _fire;
 
-        [HideInInspector] public ReactiveProperty<int> BulletsCount = new();
-        [HideInInspector] public ReactiveProperty<float> Damage = new();
-
         public event Action OnDeath;
-
-        private float _distanceToTarget;
 
         public void Initialize(PlayerInputService playerInputService, EnemyProvider enemyProvider,
             float playerInfoMoveSpeed, float playerInfoRotationSpeed, float playerInfoHealth,
             int playerInfoNumberOfBullets, int playerInfoCountShotPerMinute, float playerInfoDamage,
-            float playerInfoDecelerationRate, HealthItem healthItem, BulletItem bulletItem)
+            float playerInfoDecelerationRate)
         {
             _playerInputService = playerInputService;
             _enemyProvider = enemyProvider;
             _moveSpeed = playerInfoMoveSpeed;
             _rotationSpeed = playerInfoRotationSpeed;
-            _initialHealth = playerInfoHealth;
-            _currentHealth = _initialHealth;
+
+            InitialHealth.Value = playerInfoHealth;
+            _currentHealth = InitialHealth.Value;
+
             _countShotPerMinute = playerInfoCountShotPerMinute;
-            _initialNumberOfBullets = playerInfoNumberOfBullets;
-            _currentBullets = _initialNumberOfBullets;
-            BulletsCount.Value = _currentBullets;
-            _currentBullets = Mathf.Clamp(_currentBullets, 0, _initialNumberOfBullets);
+
+            InitialNumberOfBullets.Value = playerInfoNumberOfBullets;
+            BulletsCount.Value = InitialNumberOfBullets.Value;
+            BulletsCount.Value = Mathf.Clamp(BulletsCount.Value, 0, InitialNumberOfBullets.Value);
+
             _decelerationRate = playerInfoDecelerationRate;
-            _healthItem = healthItem;
-            _bulletItem = bulletItem;
+
             _animator = GetComponentInChildren<Animator>();
 
             Damage.Value = playerInfoDamage;
@@ -73,17 +73,11 @@ namespace TopDown
             _playerInputService.OnJoystickMove.TakeUntilDestroy(this).Subscribe(HandleMovement);
             _playerInputService.OnAttack.TakeUntilDestroy(this).Subscribe(SetFire);
 
-            _healthItem.PlayerFoundAddHealth.TakeUntilDestroy(this).Subscribe(_ => AddHealth());
-            _bulletItem.PlayerFoundAddBullets.TakeUntilDestroy(this).Subscribe(_ => AddBullets());
-
             SetHealth(_currentHealth);
         }
 
         private void OnValidate() => _controller = GetComponent<CharacterController>();
 
-        
-        
-        
         private void Update()
         {
             FireDelayProcessing();
@@ -94,9 +88,6 @@ namespace TopDown
 
             if (_targetTransform != null)
             {
-                // _distanceToTarget = Vector3.SqrMagnitude(transform.position - _targetTransform.position);
-                // Debug.Log(_distanceToTarget);
-
                 RotatePlayer(_targetTransform.position - transform.position);
             }
 
@@ -136,14 +127,6 @@ namespace TopDown
             }
         }
 
-        private void AddHealth()
-        {
-            _currentHealth = _initialHealth;
-            SetHealth(_currentHealth);
-        }
-
-        private void AddBullets() => _currentBullets = _initialNumberOfBullets;
-
         private void SetFire(bool fire) => _fire = fire;
 
         private void SetFollowTarget(Transform targetTransform) => _targetTransform = targetTransform;
@@ -152,9 +135,8 @@ namespace TopDown
 
         private void FireDelayProcessing()
         {
-            if (!_fire || _nextTimeToFire > Time.time || _currentBullets == 0) return;
+            if (!_fire || _nextTimeToFire > Time.time || BulletsCount.Value == 0) return;
             _nextTimeToFire = Time.time + 60f / _countShotPerMinute;
-            _currentBullets -= 1;
             BulletsCount.Value -= 1;
 
             Shooting();

@@ -9,10 +9,8 @@ namespace TopDown
         public readonly ReactiveProperty<int> InitialEnemiesCount = new();
         public readonly ReactiveProperty<int> EnemiesKilled = new();
         public readonly ReactiveProperty<int> BestKillScore = new();
+        public readonly ReactiveProperty<float> CurrentTime = new();
         public readonly ReactiveProperty<float> BestTime = new();
-        
-        
-        public ReactiveProperty<float> CurrentTime = new();
 
         private const string BEST_KILL_SCORE = "BestKillScore";
         private const string BEST_TIME_SCORE = "BestTimeScore";
@@ -44,12 +42,12 @@ namespace TopDown
         public void SetBestTime(float time)
         {
             CurrentTime.Value = time;
-            
-            if (BestTime.Value > 0 &&  BestTime.Value <= time) return;
-            
+
+            if (BestTime.Value > 0 && BestTime.Value <= time) return;
+
             PlayerPrefs.SetFloat(BEST_TIME_SCORE, time);
             BestTime.Value = time;
-            
+
             PlayerPrefs.Save();
         }
     }

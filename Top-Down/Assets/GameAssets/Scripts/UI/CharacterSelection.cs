@@ -1,4 +1,3 @@
-using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -17,7 +16,7 @@ namespace TopDown
         {
             _gameParametrs = gameParametrs;
         }
-        
+
         public void SelectMale()
         {
             _malePrefab.gameObject.SetActive(true);
@@ -41,6 +40,5 @@ namespace TopDown
             _spacemanPrefab.gameObject.SetActive(true);
             _gameParametrs.PlayerType = PlayerType.Spaceman;
         }
-
     }
 }

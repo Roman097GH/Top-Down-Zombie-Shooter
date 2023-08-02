@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -12,10 +13,6 @@ namespace TopDown
         [SerializeField] private PlayerCamera _playerCamera;
         [SerializeField] private GameActivePanelUI _gameActivePanelObjectUI;
         [SerializeField] private BestStatsUI _gameWinPanelObjectUI;
-        [SerializeField] private HealthItem _healthItem;
-        [SerializeField] private BulletItem _bulletItem;
-        
-        
 
         public override void InstallBindings()
         {
@@ -35,8 +32,6 @@ namespace TopDown
             Container.Bind<EnemyFactoryService>().AsSingle();
 
             Container.Bind<PlayerCamera>().FromInstance(_playerCamera);
-            Container.Bind<HealthItem>().FromInstance(_healthItem);
-            Container.Bind<BulletItem>().FromInstance(_bulletItem);
             Container.Bind<Joystick>().FromInstance(_joystick);
 
             BindScriptableObjects();

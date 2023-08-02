@@ -4,7 +4,7 @@ namespace TopDown
 {
     public class Rotate : MonoBehaviour
     {
-        private float _speedRotate = 20.0f;
+        [SerializeField] private float _speedRotate = 20.0f;
 
         private void Update()
         {

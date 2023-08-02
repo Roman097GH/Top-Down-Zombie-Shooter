@@ -22,7 +22,7 @@ namespace TopDown
             [Inject(Id = GameIds.PlayerSpawnPointID)]
             Transform playerSpawnPoint,
             PlayerInputService playerInputService, PlayerCamera playerCamera,
-            EnemyProvider enemyProvider, HealthItem healthItem, BulletItem bulletItem)
+            EnemyProvider enemyProvider)
         {
             _playerTypes = playerTypes;
             _playerPrefab = playerPrefab;
@@ -30,8 +30,6 @@ namespace TopDown
             _playerInputService = playerInputService;
             _playerCamera = playerCamera;
             _enemyProvider = enemyProvider;
-            _healthItem = healthItem;
-            _bulletItem = bulletItem;
         }
 
         public void Create(PlayerType type)
@@ -42,9 +40,9 @@ namespace TopDown
             PlayerController = player.GetComponent<PlayerController>();
             PlayerController.Initialize(_playerInputService, _enemyProvider, playerInfo.MoveSpeed,
                 playerInfo.RotationSpeed, playerInfo.Health, playerInfo.NumberOfBullets, playerInfo.CountShotPerMinute,
-                playerInfo.Damage, playerInfo.DecelerationRate, _healthItem, _bulletItem);
+                playerInfo.Damage, playerInfo.DecelerationRate);
+            
             _playerCamera.Follow(player.transform);
-
             PlayerCreate.Execute();
         }
     }

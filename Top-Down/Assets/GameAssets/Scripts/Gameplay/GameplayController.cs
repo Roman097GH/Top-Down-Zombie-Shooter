@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using UniRx;
 using UnityEngine;
@@ -13,7 +12,7 @@ namespace TopDown
         private readonly PlayerFactoryService _playerFactoryService;
         private readonly CharacterSelection _characterSelection;
         private readonly GameParametrs _gameParametrs;
-        
+
         public readonly ReactiveProperty<GameState> State = new(GameState.GameActive);
 
         public GameplayController(PlayerFactoryService playerFactoryService, GameParametrs gameParametrs)
@@ -40,16 +39,14 @@ namespace TopDown
 
         public void GameWin()
         {
-            Time.timeScale = 0;
             State.Value = GameState.GameWin;
+            Time.timeScale = 0;
         }
 
-        private async void GameOver()
+        private void GameOver()
         {
-            Time.timeScale = 0;
-
-            await Task.Delay(TimeSpan.FromSeconds(1));
             State.Value = GameState.GameOver;
+            Time.timeScale = 0;
         }
     }
 }

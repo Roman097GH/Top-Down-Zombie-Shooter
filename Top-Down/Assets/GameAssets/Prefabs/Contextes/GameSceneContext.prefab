@@ -81,4 +81,8 @@ MonoBehaviour:
   _joystick: {fileID: 0}
   _playerTypes: {fileID: 11400000, guid: f311d86544414c8468188af102049cd6, type: 2}
   _playerSpawnPoint: {fileID: 0}
-  _followCamera: {fileID: 0}
+  _playerCamera: {fileID: 0}
+  _gameActivePanelObjectUI: {fileID: 0}
+  _gameWinPanelObjectUI: {fileID: 0}
+  _healthItem: {fileID: 0}
+  _bulletItem: {fileID: 0}

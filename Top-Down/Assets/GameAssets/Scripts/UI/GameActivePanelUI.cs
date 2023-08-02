@@ -10,10 +10,9 @@ namespace TopDown
     public class GameActivePanelUI : MonoBehaviour, IInitializable
     {
         [SerializeField] private TextMeshProUGUI _enemiesCount;
+        [SerializeField] private TextMeshProUGUI _bulletsCount;
         [SerializeField] private TextMeshProUGUI _bestTime;
         [SerializeField] private TextMeshProUGUI _time;
-        
-        [SerializeField] private TextMeshProUGUI _bulletsCount;
         [SerializeField] private Slider _playerHealthBar;
 
         private CompositeDisposable _disposable;
@@ -22,18 +21,30 @@ namespace TopDown
         private PlayerFactoryService _playerFactoryService;
 
         private int _initialEnemiesCount;
-
+        private int _initialBulletsCount;
         private float _timer;
 
         [Inject]
-        private void Construct(GameSessionStats gameSessionStats, GameplayController gameplayController, PlayerFactoryService playerFactoryService)
+        private void Construct(GameSessionStats gameSessionStats, GameplayController gameplayController,
+            PlayerFactoryService playerFactoryService)
         {
             _gameSessionStats = gameSessionStats;
             _gameplayController = gameplayController;
             _playerFactoryService = playerFactoryService;
             _disposable = new CompositeDisposable();
-            
             _playerFactoryService.PlayerCreate.TakeUntilDestroy(this).Subscribe(_ => OnPlayerCreated());
+        }
+
+        public void Initialize()
+        {
+            _initialEnemiesCount = _gameSessionStats.InitialEnemiesCount.Value;
+            AddListeners();
+        }
+
+        private void AddListeners()
+        {
+            _gameSessionStats.EnemiesKilled.Subscribe(_ => UpdateInfo()).AddTo(_disposable);
+            _gameSessionStats.BestTime.Subscribe(_ => UpdateInfo()).AddTo(_disposable);
         }
 
         private void Update()
@@ -55,30 +66,22 @@ namespace TopDown
             }
         }
 
-        public void Initialize()
-        {
-            _initialEnemiesCount = _gameSessionStats.InitialEnemiesCount.Value;
-            
-            AddListeners();
-            
-            
-        }
-
         private void OnPlayerCreated()
         {
             _playerHealthBar.maxValue = _playerFactoryService.PlayerController.Health.Value;
             _playerFactoryService.PlayerController.Health.Subscribe(UpdateHealth).AddTo(_disposable);
+            _playerFactoryService.PlayerController.BulletsCount.Subscribe(UpdateBullet).AddTo(_disposable);
+        }
+
+        private void UpdateBullet(int bullet)
+        {
+            _initialBulletsCount = _playerFactoryService.PlayerController.InitialNumberOfBullets.Value;
+            _bulletsCount.text = "Bullets: " + bullet + " / " + _initialBulletsCount;
         }
 
         private void UpdateHealth(float health)
         {
             _playerHealthBar.value = health;
-        }
-        
-        private void AddListeners()
-        {
-            _gameSessionStats.EnemiesKilled.Subscribe(_ => UpdateInfo()).AddTo(_disposable);
-            _gameSessionStats.BestTime.Subscribe(_ => UpdateInfo()).AddTo(_disposable);
         }
 
         private void UpdateInfo()
@@ -86,10 +89,6 @@ namespace TopDown
             _enemiesCount.text = "Enemies killed: " + _gameSessionStats.EnemiesKilled.Value + " / " +
                                  _initialEnemiesCount;
             _bestTime.text = "Best time: " + Math.Round(_gameSessionStats.BestTime.Value, 1);
-
-           
-            
-            //Debug.Log(_playerHealthBar.value);
         }
 
         private void OnDestroy()

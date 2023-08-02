@@ -72,7 +72,7 @@ namespace TopDown
             if (_muzzleEffect != null)
             {
                 _muzzleEffect.Play();
-
+            
             }
 
             if (_audioSource != null && _audioClip != null)
