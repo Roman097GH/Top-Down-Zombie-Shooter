@@ -69,12 +69,6 @@ namespace TopDown
 
         private void PerformEffects()
         {
-            // if (_muzzleEffect != null)
-            // {
-            //     _muzzleEffect.Play();
-            //
-            // }
-            
             if (_muzzleEffect != null)
             {
                 var hitEffectRotation = transform.rotation;
