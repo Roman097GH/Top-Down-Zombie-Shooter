@@ -15,8 +15,8 @@ MonoBehaviour:
   <ViewPrefab>k__BackingField: {fileID: 8913256953396509935, guid: 22b237dde0e9d6246bbece5743dde3c4, type: 3}
   <MoveSpeed>k__BackingField: 10
   <RotationSpeed>k__BackingField: 10
-  <Health>k__BackingField: 5
-  <Damage>k__BackingField: 0.5
+  <Health>k__BackingField: 10
+  <Damage>k__BackingField: 1
   <DecelerationRate>k__BackingField: 3
   <NumberOfBullets>k__BackingField: 10
   <CountShotPerMinute>k__BackingField: 60

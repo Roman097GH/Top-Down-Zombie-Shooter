@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4374105900042327254}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 2}
+  m_LocalPosition: {x: 0.426, y: 0.737, z: 1.662}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -50,7 +50,7 @@ MonoBehaviour:
     m_Bits: 1024
   _distance: 100
   _shotCount: 1
-  _muzzleEffect: {fileID: 0}
+  _muzzleEffect: {fileID: 4271093393614929224, guid: 87ee7299dd44ed747af24dbb91bcd33b, type: 3}
   _hitEffectPrefab: {fileID: 19886758, guid: bb954c7832c9a9845b017b284d33fbc8, type: 3}
   _hitEffectDestroyDelay: 2
   _audioSource: {fileID: 0}
@@ -108,16 +108,16 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _moveSpeed: 0
   _rotationSpeed: 0
-  _initialHealth: 0
   _decelerationRate: 0
   _countShotPerMinute: 0
+  InitialHealth:
+    value: 0
   InitialNumberOfBullets:
     value: 0
   BulletsCount:
     value: 0
   Damage:
     value: 0
-  _muzzleEffect: {fileID: 4271093393614929224, guid: 87ee7299dd44ed747af24dbb91bcd33b, type: 3}
 --- !u!114 &-1988675681506115184
 MonoBehaviour:
   m_ObjectHideFlags: 0

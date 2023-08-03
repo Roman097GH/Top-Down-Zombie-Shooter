@@ -69,11 +69,20 @@ namespace TopDown
 
         private void PerformEffects()
         {
+            // if (_muzzleEffect != null)
+            // {
+            //     _muzzleEffect.Play();
+            //
+            // }
+            
             if (_muzzleEffect != null)
             {
-                _muzzleEffect.Play();
-            
+                var hitEffectRotation = transform.rotation;
+                var hitEffect = Instantiate(_muzzleEffect, transform.position, hitEffectRotation);
+
+                Destroy(hitEffect.gameObject, _hitEffectDestroyDelay);
             }
+            
 
             if (_audioSource != null && _audioClip != null)
             {

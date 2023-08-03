@@ -17,4 +17,4 @@ MonoBehaviour:
   <EnemyLevelInfos>k__BackingField:
   - <Health>k__BackingField: 1
     <Damage>k__BackingField: 1
-    <MoveSpeed>k__BackingField: 1
+    <MoveSpeed>k__BackingField: 2

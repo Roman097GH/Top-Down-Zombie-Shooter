@@ -56,7 +56,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 7
+  m_Radius: 20
   m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!1 &2746849879071224543
 GameObject:
@@ -107,7 +107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45773da671c6bd47b49f7fc23938628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBarSlider: {fileID: 6111108519362111147}
   _enemyName: 
   _attackRadius: 0
   _moveSpeed: 0
@@ -117,6 +116,7 @@ MonoBehaviour:
   _enemyStateCheck: {fileID: 8668084790801710446}
   _meshAgent: {fileID: 2236549947973089459}
   _animator: {fileID: 7327740996260816604}
+  _healthBarSlider: {fileID: 6111108519362111147}
   _attackTimer: 0
   _attackPeriod: 2.5
 --- !u!195 &2236549947973089459
